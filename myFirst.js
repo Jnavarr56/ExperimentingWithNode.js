@@ -2,9 +2,8 @@
 //==========================
 
 /*
-    So Far: 
-     - You used NPM to install axios and are doing a simple get request to get the reddit homepage data as JSON.
-*/
+    //So Far: 
+    // - You used NPM to install axios and are doing a simple get request to get the reddit homepage data as JSON.
 
 const axios = require('axios');
 
@@ -21,14 +20,26 @@ axios.get('https://www.reddit.com/.json').then(response => {
             }
 
         );
-
+        
     });
 
 });
+*/
+    
+
+
+const http = require('http');
+const myCustomModule = require('./myTestModule');
+
+http.createServer(function (req, res) {
+    
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.end(myCustomModule.getCurrentTime());
+
+}).listen(8080);
 
 //Continue with the W3Schools Node.js Tutorial https://www.w3schools.com/nodejs/nodejs_modules.asp
 
 
 
-    
 
