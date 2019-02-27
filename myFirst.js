@@ -27,19 +27,37 @@ axios.get('https://www.reddit.com/.json').then(response => {
 */
     
 
-
+const url = require('url');
 const http = require('http');
+const readline = require('readline');
 const myCustomModule = require('./myTestModule');
 
+console.log(4 + 5 / 10 * 3);
+
+
+
+
 http.createServer(function (req, res) {
-    
+
     res.writeHead(200, {'Content-Type': 'text/html'});
-    res.end(myCustomModule.getCurrentTime());
+    res.write(`<p style="font-family: Helvetica;">This is the current date and time: ${myCustomModule.getCurrentTime()}</p>`);
+    res.end();
+
+    //const urlObj = url.parse(req.url, true);
 
 }).listen(8080);
 
-//Continue with the W3Schools Node.js Tutorial https://www.w3schools.com/nodejs/nodejs_modules.asp
+//Continue with the W3Schools Node.js Tutorial https://www.w3schools.com/nodejs/nodejs_filesystem.asp
 
+/*
 
+const userInput = readline.createInterface({
 
+    input: process.stdin,
+    output: process.stdout,
 
+});
+
+userInput.question('Enter a number. ', userInput => myCustomModule.getFactorialSum(Number(userInput)));
+
+*/
