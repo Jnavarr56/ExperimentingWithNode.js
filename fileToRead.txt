@@ -1,0 +1,4 @@
+Sup!
+I Created this text file to demo reading files using Node.js
+This would be the third line!
+And this, the fourth!

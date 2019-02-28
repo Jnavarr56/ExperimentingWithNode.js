@@ -26,38 +26,56 @@ axios.get('https://www.reddit.com/.json').then(response => {
 });
 */
     
-
+const fs = require('fs');
 const url = require('url');
 const http = require('http');
 const readline = require('readline');
+
 const myCustomModule = require('./myTestModule');
 
-console.log(4 + 5 / 10 * 3);
 
-
-
-
+//Experimenting with HTTP Module--------------
 http.createServer(function (req, res) {
 
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(`<p style="font-family: Helvetica;">This is the current date and time: ${myCustomModule.getCurrentTime()}</p>`);
     res.end();
 
-    //const urlObj = url.parse(req.url, true);
+    //Experimenting with URL Module--------------
+    const urlObj = url.parse(req.url, true);
+    console.log(urlObj.href);
 
 }).listen(8080);
 
 //Continue with the W3Schools Node.js Tutorial https://www.w3schools.com/nodejs/nodejs_filesystem.asp
 
-/*
+//Experimenting with FileSystem Module--------------
+fs.readFile('fileToRead.txt', 'utf8', (err, contents) => {
 
-const userInput = readline.createInterface({
-
-    input: process.stdin,
-    output: process.stdout,
+    console.log(contents);
 
 });
 
-userInput.question('Enter a number. ', userInput => myCustomModule.getFactorialSum(Number(userInput)));
-
+/*
+TRY TO ADD CREATION OF FILE A, OPENING OF FILE B TO ADD TO IT, AS WELL AS DELETION OF FILE A, ALSO RENAME FILE B;
 */
+
+
+setTimeout(() => {
+
+    //Experimenting with Readline Module--------------
+    const userInput = readline.createInterface({
+
+        input: process.stdin,
+        output: process.stdout,
+    
+    });
+
+    userInput.question('Enter a number. To get the factorial sum: ', userInput => {
+        
+        myCustomModule.getFactorialSum(Number(userInput));
+
+    }); 
+
+}, 1000); 
+

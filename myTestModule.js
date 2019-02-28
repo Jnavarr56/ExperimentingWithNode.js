@@ -18,6 +18,6 @@ exports.getFactorialSum = n => {
 
     }
 
-    console.log(`\nYour answer is ${n}`);
+    console.log(`\nYour answer is ${n}\n\n`);
 
 }
