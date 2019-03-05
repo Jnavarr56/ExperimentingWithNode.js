@@ -1,8 +1,11 @@
-exports.getCurrentTime = () => {
+const moment = require('moment-timezone');
 
-    const moment = require('moment-timezone');
 
-    return moment.tz(moment.tz.guess()).format('LLLL');
+exports.getCurrentTime = () => { 
+
+    const guessedTimezone = moment.tz.guess(); 
+
+    return `${moment.tz(guessedTimezone).format('LLLL')} ${guessedTimezone.replace('_', ' ')}`;
 
 } 
 
@@ -21,3 +24,4 @@ exports.getFactorialSum = n => {
     console.log(`\nYour answer is ${n}\n\n`);
 
 }
+
