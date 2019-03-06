@@ -1,7 +1,7 @@
 const fs = require('fs');               //FileSystem Module
 const readline = require('readline');   //Readline Module
 
-
+//Experimenting with FileSystem Module--------------
 const userInput = readline.createInterface({
 
     input: process.stdin,
@@ -9,11 +9,89 @@ const userInput = readline.createInterface({
 
 });
 
-//Experimenting with FileSystem Module--------------
+program();
 
+function program() {
 
-var dirFiles = fs.readdirSync('.');
-for (file of dirFiles) {
+    const optionText = `* Enter 1 to read fileToRead.txt\n* Enter 2 to rename fileToRename.txt to renamed.txt\n* Enter 3 to create a file\n* Enter anything else to quit\n`;
+
+    userInput.question(optionText, input => {
+
+        sanitizeFileName();
+
+        if (input === '1') { readAndDisplayFile('fileToRead.txt'); }
+
+        else if (input === '2') { displayDirAndRename(); displayDirAfterRename(); }
+
+        else if (input === '3') { 
+
+            let fileContent, filename;
+            userInput.question('\nWhat should the file name be?: ', input => { 
+                
+                filename = input + '.txt'; 
+
+                userInput.question('\nWhat should the file say?: ', input =>  { 
+                
+                    fileContent = input; 
+
+                    fs.writeFileSync(filename, fileContent);
+
+                    console.log('Created your file and wrote your content to it.\n');
+                    console.log(`\n\n-------- Reading ./${filename} ----------\n`);
+
+                    console.log(fs.readFileSync(filename, 'utf8'));
+
+                    console.log('\n------------------------------------------');
+
+                    userInput.question('\nDelete File [y/n]?: ', input =>  {
+
+                        if (input[0].toLowerCase() === 'y') {
+
+                            console.log('\ndeleting ' + filename);
+
+                            fs.unlinkSync('./' + filename);
+
+                            console.log('\nSUCESSFULLY DELETED ' + filename + '\n');
+
+                        }
+
+                        else if (input[0].toLowerCase() === 'n') {
+
+                            console.log('\nNOT deleting ' + filename + '\n');
+
+                        }
+
+                        program();
+
+                    });
+
+                });
+
+            });
+
+        }
+
+        else { process.exit(); }
+
+        program();
+        
+    });
+
+}
+
+function loopThroughDir(callback) {
+
+    const dirFiles = fs.readdirSync('.');
+
+    for (file of dirFiles) {
+
+        callback(file);
+
+    }
+
+}
+
+function santitizeCallback(file) {
 
     if (file === 'renamed.txt') {
 
@@ -33,71 +111,63 @@ for (file of dirFiles) {
 
 }
 
+function sanitizeFileName() { loopThroughDir(santitizeCallback); }
 
-const optionText = `* Enter 1 to read fileToRead.txt\n* Enter 2 to rename fileToRename.txt to renamed.txt\n* Enter 3 to create a file\n`;
+function readAndDisplayFile(filename) {
 
-userInput.question(optionText, input => {
+    console.log(`\n\n-------- Reading ./${filename} --------\n`);
 
-    if (input === '1') {
+    console.log(fs.readFileSync('fileToRead.txt', 'utf8'));
 
-        fs.readFile('fileToRead.txt', 'utf8', (err, contents) => {
+    console.log('------------------------------------------');
 
-            console.log('\n\n-------- Reading ./fileToRead.txt --------\n\n');
-            
-            console.log(contents);
+}
+
+function displayDirAndRename() {
+
+    console.log('\n------------------------------------------');
+    console.log('Files in this Directory Before Change-----');
+
+    loopThroughDir(displayDirAndRenameCallback);
+
+}
+
+function displayDirAndRenameCallback(file) {
+
+    if (file === 'fileToRename.txt') { 
         
-            console.log('------------------------------------------');
+        console.log(`*${file}*`);
         
-        });
+        fs.renameSync(file, 'renamed.txt', function (err) {
 
-    }
+            if (err) {
 
-    else if (input === '2') {
+                console.log('Sorry, had an issue!');
 
-        console.log('\n------------------------------------------');
+                process.exit();
 
-        console.log('Files in this Directory Before Change-----');
-        dirFiles = fs.readdirSync('.');
-        for (file of dirFiles) {
-
-            if (file === 'fileToRename.txt') { 
-                
-                console.log(`*${file}*`);
-                
-                fs.renameSync(file, 'renamed.txt', function (err) {
-
-                    if (err) {
-    
-                        console.log('Sorry, had an issue!');
-    
-                        process.exit();
-    
-                    }
-    
-                });
-            
             }
 
-            else { console.log(` ${file} `); }
-            
-        }
-
-        console.log('Files in this Directory After Change-----');
-        dirFiles = fs.readdirSync('.');
-        for (file of dirFiles) {
-
-            console.log(file === 'renamed.txt' ? `*${file}*` : ` ${file} `);
-
-        }
-
-        console.log('------------------------------------------');
-
+        });
+    
     }
 
-    else if (userInput === '3') {
+    else { console.log(` ${file} `); }
 
+}
 
-    }
+function displayDirAfterRename() {
 
-});
+    console.log('Files in this Directory After Change-----');
 
+    loopThroughDir(displayDirAfterRenameCallback);
+
+    console.log('------------------------------------------');
+
+}
+
+function displayDirAfterRenameCallback(file) {
+
+    console.log(file === 'renamed.txt' ? `*${file}*` : ` ${file} `);
+
+}

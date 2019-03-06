@@ -1,10 +1,14 @@
+/*
+NOTES:
+INCLUDE TWO INPUTS ON HTML RENDERING TO REDIRECT WITH PRINTING QUERY STRING PARAMS
+*/
+
 //Experimenting with Node.js
 //==========================
 
 const fs = require('fs');     //FileSystem Module
 const url = require('url');     //URL Module
 const http = require('http');   //HTTP Module
-
 
 //Created my own module.
 const myCustomModule = require('./myTestModule'); 
