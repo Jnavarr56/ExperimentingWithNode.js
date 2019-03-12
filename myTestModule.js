@@ -1,6 +1,5 @@
 const moment = require('moment-timezone');
 
-
 exports.getCurrentTime = () => { 
 
     const guessedTimezone = moment.tz.guess(); 
