@@ -8,8 +8,22 @@
 <body>
     <h1>Hey! Here's some content from an HTML file to test serving HTML content to a client via Node.js</h1>
     <ul>
-        <li>The simple server is programmed to redirect any paths that aren't '/get-current-time' to '/'.</li>
         <li><a href="/get-current-time">Click here to go to a page for which the server will send the current time as content.</a></li>
+        <li>The simple server is programmed to redirect any paths that aren't '/get-current-time' to '/'.</li>
+        <li>Enter some text in these inputs and hit Go to redirect to a url with the text in the input as a query param:
+            <br>
+            <input id="param-name" type="test" placeholder="Param Name" />
+            <input id="param-val" type="test" placeholder="Param Value" />
+            <button type="submit" id="submit">Go</button>
+        </li>
     </ul>
+
+    <script>
+        document.getElementById('submit').addEventListener('click', () => {
+
+            window.location.href += `${window.location.search ? '&' : '?'}${document.getElementById('param-name').value}=${document.getElementById('param-val').value}`;     
+
+        });
+    </script>
 </body>
 </html>
