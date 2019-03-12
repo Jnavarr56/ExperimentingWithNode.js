@@ -5,6 +5,7 @@ const formidable = require('formidable');
 
 console.log('Running on port 8080');
 
+
 http.createServer(function(req, res) {
 
     res.writeHead(200, {'Content-Tyoe':'text/html'});
@@ -18,27 +19,25 @@ http.createServer(function(req, res) {
         form.parse(req, function (err, fields, files) {
 
             const oldPath = files.filetoupload.path;
-            const newPath = `./uploadedFile.js`;
+            const newPath = `./uploadedFile.txt`;
 
             fs.rename(oldPath, newPath, function (err) {
 
                 if (err) throw err;
 
-                res.write('File uploaded and moved!');
+                res.write(`Your uploaded file reads:\n\n${fs.readFileSync(newPath, 'utf8')}`);
 
                 res.end();
 
             });
-
-            res.write('File uploaded');
-
-            res.end();
 
         });
         
     }
 
     else if (urlObj.href === '/') {
+
+        deleteUploaded();
 
         fs.readFile('uploadForm.html', function(err, data) {
 
@@ -72,23 +71,19 @@ http.createServer(function(req, res) {
 }).listen(8080);
 
 
-function loopThroughDir(callback) {
+function deleteUploaded()  {
 
     const dirFiles = fs.readdirSync('.');
 
     for (file of dirFiles) {
 
-        callback(file);
+        if (file === 'uploadedFile.txt') {
 
-    }
-
-}
-
-function deleteUpLoadedCallback(file) {
-
-    if (file === 'uploadedFile.txt') {
-
-        fs.unlinkSync(filePath);
+            fs.unlinkSync(file);
+    
+            return;
+    
+        }
 
     }
 
